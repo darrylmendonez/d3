@@ -1,5 +1,18 @@
 // select svg container first
-const svg = d3.select('svg');
+const svg = d3.select('.canvas')
+  .append('svg')
+  .attr('width', 600)
+  .attr('height', 600);
+
+// create margins and dimesions
+const margin = {top: 20, right: 20, bottom: 100, left: 100};
+const graphWidth = 600 - margin.left - margin.right;
+const graphHeight = 600 -margin.top - margin.bottom;
+
+const graph = svg.append('g')
+  .attr('width', graphWidth)
+  .attr('height', graphHeight)
+  .attr('transform', `translate( ${margin.left},${margin.top})` )
 
 d3.json('data/menu.json').then(data => {
 
