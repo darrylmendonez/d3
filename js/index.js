@@ -41,7 +41,7 @@ const yAxisGroup = graph.append('g');
     .attr('text-anchor', 'end')
     .attr('fill', 'orange');
 
-const t = d3.transition().duration(500);
+const t = d3.transition().duration(1500);
 
 // update function
 const update = (data) => {
@@ -66,13 +66,13 @@ const update = (data) => {
     // append the enter selection to the DOM
     rects.enter()
       .append('rect')
-      .attr('width', x.bandwidth)
       .attr('height', 0)
       .attr('fill', 'orange')
       .attr('x', d => x(d.name) )
       .attr('y', graphHeight)
       .merge(rects)
       .transition(t)
+        .attrTween('width', widthTween)
         .attr('y', d => y(d.orders))
         .attr('height', d => graphHeight - y( d.orders) );
 
@@ -112,3 +112,17 @@ db.collection('dishes').onSnapshot(res => {
 
 });
 
+// tweens
+const widthTween = (d) => {
+  // define interpolation
+  // d3.interpolation returns a function which we call 'i'
+  let i = d3.interpolate(0, x.bandwidth());
+  
+  // return a function which takes in a time ticker 't'
+  return function(t){
+
+    // return the value from passing the ticker into the interpolation
+    return i(t);
+  }
+
+}
