@@ -54,7 +54,7 @@ const update = (data) => {
     .data(data)
 
     // remove exit selection
-    // rects.exit().remove();
+    rects.exit().remove();
 
     // update current shapes in DOM
     rects.attr('width', x.bandwidth)
@@ -88,9 +88,9 @@ db.collection('dishes').get().then(res => {
   update(data);
 
   d3.interval(() => {
-    data[0].orders += 50
-    // update(data);
-  }, 1000)
+    data.pop();
+    update(data);
+  }, 3000)
 
 })    
 
