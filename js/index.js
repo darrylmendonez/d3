@@ -78,19 +78,14 @@ const update = (data) => {
 
 };
 
-db.collection('dishes').get().then(res => {
+var data=[];
 
-  var data = [];
-  res.docs.forEach(doc => {
-    data.push(doc.data())
-  });
+// get data from firestore
+db.collection('dishes').onSnapshot(res => {
+  res.docChanges().forEach(change => {
 
-  update(data);
+    console.log(change.doc.data());
 
-  d3.interval(() => {
-    data.pop();
-    update(data);
-  }, 3000)
-
-})    
+  })
+});
 
