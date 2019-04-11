@@ -41,6 +41,8 @@ const yAxisGroup = graph.append('g');
     .attr('text-anchor', 'end')
     .attr('fill', 'orange');
 
+const t = d3.transition().duration(500);
+
 // update function
 const update = (data) => {
 
@@ -60,9 +62,6 @@ const update = (data) => {
     rects.attr('width', x.bandwidth)
       .attr('fill', 'orange')
       .attr( 'x', d => x(d.name) )
-      .transition().duration(500)
-        .attr('height', d => graphHeight - y( d.orders) )
-        .attr('y', d => y(d.orders));
 
     // append the enter selection to the DOM
     rects.enter()
@@ -72,7 +71,8 @@ const update = (data) => {
       .attr('fill', 'orange')
       .attr('x', d => x(d.name) )
       .attr('y', graphHeight)
-      .transition().duration(500)
+      .merge(rects)
+      .transition(t)
         .attr('y', d => y(d.orders))
         .attr('height', d => graphHeight - y( d.orders) );
 
